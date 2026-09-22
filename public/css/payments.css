@@ -1,0 +1,181 @@
+/* Payment Summary Cards */
+.payment-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.payment-stat-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.payment-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.payment-stat-icon.collected {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.payment-stat-icon.pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.payment-stat-text span {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--gray-500);
+}
+
+.payment-stat-text h3 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--gray-800);
+  margin-top: 4px;
+}
+
+/* Student Balance Preview Box in Add Payment Modal */
+.student-fee-preview {
+  background: #f8fafc;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-top: 4px;
+  display: none;
+}
+
+.student-fee-preview.show {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  text-align: center;
+}
+
+.preview-pill {
+  padding: 8px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid var(--gray-200);
+}
+
+.preview-pill span {
+  display: block;
+  font-size: 11px;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.preview-pill strong {
+  font-size: 14px;
+  color: var(--gray-800);
+}
+
+/* Receipt Modal Styles for Viewing & Printing */
+.receipt-container {
+  background: #fff;
+  padding: 30px;
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius-sm);
+  color: var(--gray-800);
+}
+
+.receipt-header {
+  text-align: center;
+  border-bottom: 2px solid var(--gray-200);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.receipt-header h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+.receipt-header p {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-top: 4px;
+}
+
+.receipt-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.receipt-amount-highlight {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.receipt-amount-highlight span {
+  font-size: 12px;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.receipt-amount-highlight h3 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--success);
+  margin-top: 4px;
+}
+
+.receipt-footer-signatures {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 20px;
+  font-size: 12px;
+  color: var(--gray-600);
+}
+
+.signature-line {
+  border-top: 1px solid var(--gray-400);
+  width: 140px;
+  text-align: center;
+  padding-top: 4px;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .receipt-container, .receipt-container * {
+    visibility: visible;
+  }
+  .receipt-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: none;
+    padding: 20px;
+  }
+}

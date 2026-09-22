@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Smart Hostel Management System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">
+          <i class="fa-solid fa-hotel"></i>
+        </div>
+        <div class="sidebar-title">
+          <h2>Smart Hostel</h2>
+          <span>College Edition</span>
+        </div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-label">Main Menu</li>
+        <li class="active">
+          <a href="/pages/dashboard.html">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/students.html">
+            <i class="fa-solid fa-user-graduate"></i>
+            <span>Students</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/rooms.html">
+            <i class="fa-solid fa-door-open"></i>
+            <span>Rooms</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/payments.html">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <span>Payments</span>
+          </a>
+        </li>
+
+        <li class="menu-label">Reports & Analytics</li>
+        <li>
+          <a href="/pages/students.html">
+            <i class="fa-solid fa-clipboard-user"></i>
+            <span>Student Report</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/rooms.html">
+            <i class="fa-solid fa-bed"></i>
+            <span>Room Report</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/payments.html">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Fee Report</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="admin-profile">
+          <div class="admin-avatar" id="sidebar-admin-avatar">A</div>
+          <div class="admin-info">
+            <div class="admin-name" id="sidebar-admin-name">Hostel Admin</div>
+            <div class="admin-role">Chief Warden</div>
+          </div>
+        </div>
+        <button class="btn-logout" id="btn-logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle" id="mobile-toggle">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-title">
+            <h1>Hostel Overview Dashboard</h1>
+            <p>Real-time occupancy statistics & fee collection metrics</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="system-badge">
+            <span class="pulse-dot"></span>
+            <span>MongoDB Connected</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Body -->
+      <main class="content-body">
+        <!-- Quick Action Bar -->
+        <div class="quick-actions-bar">
+          <div class="quick-actions-text">
+            <h3>Administrative Quick Actions</h3>
+            <p>Enroll new hostel residents, allocate vacant beds, or log cash/online fee payments.</p>
+          </div>
+          <div class="quick-actions-btns">
+            <a href="/pages/students.html" class="btn btn-primary btn-sm">
+              <i class="fa-solid fa-user-plus"></i> + Add Student
+            </a>
+            <a href="/pages/rooms.html" class="btn btn-secondary btn-sm" style="color: #fff; background: rgba(255,255,255,0.15); border: none;">
+              <i class="fa-solid fa-plus"></i> + Add Room
+            </a>
+            <a href="/pages/payments.html" class="btn btn-success btn-sm">
+              <i class="fa-solid fa-hand-holding-dollar"></i> + Collect Fee
+            </a>
+          </div>
+        </div>
+
+        <!-- 6 Key Stat Cards Grid -->
+        <div class="stats-grid">
+          <div class="stat-card students">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-title">Total Students</div>
+              <div class="stat-value" id="stat-total-students">0</div>
+              <div class="stat-subtext">Active Hostellers</div>
+            </div>
+          </div>
+
+          <div class="stat-card rooms">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-door-open"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-title">Total Rooms</div>
+              <div class="stat-value" id="stat-total-rooms">0</div>
+              <div class="stat-subtext">Across All Floors</div>
+            </div>
+          </div>
+
+          <div class="stat-card occupied">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-bed"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-title">Occupied Beds</div>
+              <div class="stat-value" id="stat-occupied-beds">0</div>
+              <div class="stat-subtext">Beds Currently Allotted</div>
+            </div>
+          </div>
+
+          <div class="stat-card available">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-title">Available Beds</div>
+              <div class="stat-value" id="stat-available-beds">0</div>
+              <div class="stat-subtext">Vacant & Ready to Allot</div>
+            </div>
+          </div>
+
+          <div class="stat-card collected">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-wallet"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-title">Total Fee Collection</div>
+              <div class="stat-value" id="stat-fee-collected">₹0</div>
+              <div class="stat-subtext">Verified Collections</div>
+            </div>
+          </div>
+
+          <div class="stat-card pending">
+            <div class="stat-icon-wrapper">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-title">Pending Fees</div>
+              <div class="stat-value" id="stat-fee-pending">₹0</div>
+              <div class="stat-subtext">Unpaid Balance Due</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Layout Grid -->
+        <div class="dashboard-grid">
+          <!-- Recent Students Table -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-user-group"></i>
+                <span>Recent Student Enrollments</span>
+              </div>
+              <a href="/pages/students.html" class="view-all-link">
+                View All Students <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Room</th>
+                    <th>Fee Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-students-tbody">
+                  <tr>
+                    <td colspan="5" style="text-align: center; color: var(--gray-400); padding: 24px;">Loading data...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Progress & Summary Gauges -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Hostel Capacity & Fees</span>
+              </div>
+            </div>
+
+            <!-- Occupancy Gauge -->
+            <div class="occupancy-stat-box">
+              <div class="occupancy-info">
+                <span>Room Bed Occupancy</span>
+                <span id="occupancy-progress-text">0%</span>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill progress-fill-primary" id="occupancy-progress-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Fee Collection Gauge -->
+            <div class="occupancy-stat-box">
+              <div class="occupancy-info">
+                <span>Fee Collection Progress</span>
+                <span id="fee-progress-text">0%</span>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill progress-fill-success" id="fee-progress-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Recent Payments List -->
+            <div style="margin-top: 24px;">
+              <div style="font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 12px; display: flex; justify-content: space-between;">
+                <span>Recent Transactions</span>
+                <a href="/pages/payments.html" style="font-size: 12px; color: var(--primary); text-decoration: none;">View All</a>
+              </div>
+              <div class="table-responsive">
+                <table class="custom-table" style="font-size: 12px;">
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Amount</th>
+                      <th>Mode</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-payments-tbody">
+                    <tr>
+                      <td colspan="4" style="text-align: center; color: var(--gray-400);">Loading...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

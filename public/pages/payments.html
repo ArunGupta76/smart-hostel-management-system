@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Management - Smart Hostel Management System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/payments.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">
+          <i class="fa-solid fa-hotel"></i>
+        </div>
+        <div class="sidebar-title">
+          <h2>Smart Hostel</h2>
+          <span>College Edition</span>
+        </div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-label">Main Menu</li>
+        <li>
+          <a href="/pages/dashboard.html">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/students.html">
+            <i class="fa-solid fa-user-graduate"></i>
+            <span>Students</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/rooms.html">
+            <i class="fa-solid fa-door-open"></i>
+            <span>Rooms</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/pages/payments.html">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <span>Payments</span>
+          </a>
+        </li>
+
+        <li class="menu-label">Reports & Analytics</li>
+        <li>
+          <a href="/pages/students.html">
+            <i class="fa-solid fa-clipboard-user"></i>
+            <span>Student Report</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/rooms.html">
+            <i class="fa-solid fa-bed"></i>
+            <span>Room Report</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/pages/payments.html">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Fee Report</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="admin-profile">
+          <div class="admin-avatar" id="sidebar-admin-avatar">A</div>
+          <div class="admin-info">
+            <div class="admin-name" id="sidebar-admin-name">Hostel Admin</div>
+            <div class="admin-role">Chief Warden</div>
+          </div>
+        </div>
+        <button class="btn-logout" id="btn-logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle" id="mobile-toggle">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-title">
+            <h1>Fee Payment Management</h1>
+            <p>Record transactions, inspect audit receipts, and monitor arrears</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openAddPaymentModal()">
+            <i class="fa-solid fa-receipt"></i> Record New Payment
+          </button>
+        </div>
+      </header>
+
+      <main class="content-body">
+        <!-- Payment Metrics Summary -->
+        <div class="payment-stats-grid">
+          <div class="payment-stat-card">
+            <div class="payment-stat-icon collected">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="payment-stat-text">
+              <span>Total Fee Collection</span>
+              <h3 id="total-payments-collected">₹0</h3>
+            </div>
+          </div>
+
+          <div class="payment-stat-card">
+            <div class="payment-stat-icon pending">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="payment-stat-text">
+              <span>Outstanding Hostel Dues</span>
+              <h3 id="total-payments-pending">₹0</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="controls-bar">
+          <div class="search-filters">
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="payment-search-input" placeholder="Search by student, receipt number, mode, or room...">
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 13px; font-weight: 600; color: var(--gray-600);" id="payment-total-count">Loading...</span>
+            <button class="btn btn-secondary btn-sm" id="btn-export-payments">
+              <i class="fa-solid fa-file-arrow-down"></i> Export Payment Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Payments Table -->
+        <div class="dashboard-card" style="padding: 0; overflow: hidden;">
+          <div class="table-responsive">
+            <table class="custom-table" id="payments-table">
+              <thead>
+                <tr>
+                  <th>Receipt No.</th>
+                  <th>Resident Student</th>
+                  <th>Room No.</th>
+                  <th>Amount Paid</th>
+                  <th>Payment Date</th>
+                  <th>Payment Mode</th>
+                  <th style="text-align: right; padding-right: 24px;">Receipt Actions</th>
+                </tr>
+              </thead>
+              <tbody id="payments-table-tbody">
+                <tr>
+                  <td colspan="7" style="text-align: center; color: var(--gray-400); padding: 32px;">Loading transactions...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Payment Modal -->
+  <div class="modal-overlay" id="payment-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Record Fee Payment</h3>
+        <button class="modal-close" onclick="closeModal('payment-modal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="payment-form">
+        <div class="modal-body">
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="payment-student-select">Select Student *</label>
+            <select id="payment-student-select" class="form-control" required>
+              <option value="">-- Choose Student --</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Fee Preview of Selected Student -->
+          <div id="student-fee-preview" class="student-fee-preview">
+            <div class="preview-pill">
+              <span>Total Fee</span>
+              <strong id="preview-total-fee">₹0</strong>
+            </div>
+            <div class="preview-pill">
+              <span>Paid So Far</span>
+              <strong id="preview-paid-fee" style="color: #059669;">₹0</strong>
+            </div>
+            <div class="preview-pill">
+              <span>Remaining Due</span>
+              <strong id="preview-due-fee" style="color: #dc2626;">₹0</strong>
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-top: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="payment-amount">Payment Amount ₹ *</label>
+              <input type="number" id="payment-amount" class="form-control" placeholder="e.g. 10000" min="1" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="payment-date">Payment Date *</label>
+              <input type="date" id="payment-date" class="form-control" required>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label class="form-label" for="payment-mode">Payment Mode *</label>
+              <select id="payment-mode" class="form-control" required>
+                <option value="Cash">Cash (Counter Deposit)</option>
+                <option value="UPI / GPay / PhonePe">UPI / Google Pay / PhonePe</option>
+                <option value="Bank Transfer (NEFT/IMPS)">Bank Transfer (NEFT / IMPS / Net Banking)</option>
+                <option value="Cheque">Bank Cheque / DD</option>
+              </select>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label class="form-label" for="payment-remarks">Remarks / Transaction Reference</label>
+              <input type="text" id="payment-remarks" class="form-control" placeholder="e.g. 2nd Installment / UTR: 3291823912">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('payment-modal')">Cancel</button>
+          <button type="submit" id="btn-save-payment" class="btn btn-primary">Confirm & Print Voucher</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View / Print Receipt Voucher Modal -->
+  <div class="modal-overlay" id="receipt-modal">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h3>Hostel Fee Payment Receipt</h3>
+        <button class="modal-close" onclick="closeModal('receipt-modal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="receipt-container" id="printable-receipt">
+          <div class="receipt-header">
+            <h2>SMART HOSTEL MANAGEMENT SYSTEM</h2>
+            <p>Official Fee Receipt & Payment Acknowledgement</p>
+            <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px;">Hostel Administration Office • College Campus</div>
+          </div>
+
+          <div class="receipt-meta-grid">
+            <div>
+              <strong>Receipt No: </strong> <span id="receipt-number-text">RCP-0000</span>
+            </div>
+            <div style="text-align: right;">
+              <strong>Payment Date: </strong> <span id="receipt-date-text">DD-MM-YYYY</span>
+            </div>
+            <div>
+              <strong>Student Name: </strong> <span id="receipt-student-name">Student</span>
+            </div>
+            <div style="text-align: right;">
+              <strong>Course: </strong> <span id="receipt-student-course">Course</span>
+            </div>
+            <div>
+              <strong>Allocated Room: </strong> <span id="receipt-student-room">Room 101</span>
+            </div>
+            <div style="text-align: right;">
+              <strong>Mobile: </strong> <span id="receipt-student-mobile">0000000000</span>
+            </div>
+          </div>
+
+          <div class="receipt-amount-highlight">
+            <span>Amount Received</span>
+            <h3 id="receipt-amount-text">₹0</h3>
+            <div style="font-size: 12px; color: var(--gray-600); margin-top: 6px;">
+              Paid via: <strong id="receipt-mode-text">Cash</strong> • Remarks: <span id="receipt-remarks-text">Semester Fee</span>
+            </div>
+          </div>
+
+          <div style="background: var(--gray-50); border-radius: 6px; padding: 12px; font-size: 12px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <span>Total Semester Fee:</span>
+              <strong id="receipt-total-fee">₹0</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <span>Total Fee Paid till Date:</span>
+              <strong id="receipt-paid-fee" style="color: var(--success);">₹0</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>Remaining Balance Due:</span>
+              <strong id="receipt-due-fee" style="color: var(--danger);">₹0</strong>
+            </div>
+          </div>
+
+          <div class="receipt-footer-signatures">
+            <div class="signature-line">
+              <span>Student Signature</span>
+            </div>
+            <div class="signature-line">
+              <span>Warden / Authorized Signatory</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('receipt-modal')">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-print-receipt">
+          <i class="fa-solid fa-print"></i> Print Receipt Voucher
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/payments.js"></script>
+</body>
+</html>

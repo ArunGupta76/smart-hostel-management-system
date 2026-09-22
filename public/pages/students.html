@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Management - Smart Hostel Management System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/students.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">
+          <i class="fa-solid fa-hotel"></i>
+        </div>
+        <div class="sidebar-title">
+          <h2>Smart Hostel</h2>
+          <span>College Edition</span>
+        </div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-label">Main Menu</li>
+        <li>
+          <a href="/pages/dashboard.html">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/pages/students.html">
+            <i class="fa-solid fa-user-graduate"></i>
+            <span>Students</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/rooms.html">
+            <i class="fa-solid fa-door-open"></i>
+            <span>Rooms</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/payments.html">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <span>Payments</span>
+          </a>
+        </li>
+
+        <li class="menu-label">Reports & Analytics</li>
+        <li class="active">
+          <a href="/pages/students.html">
+            <i class="fa-solid fa-clipboard-user"></i>
+            <span>Student Report</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/rooms.html">
+            <i class="fa-solid fa-bed"></i>
+            <span>Room Report</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/payments.html">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Fee Report</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="admin-profile">
+          <div class="admin-avatar" id="sidebar-admin-avatar">A</div>
+          <div class="admin-info">
+            <div class="admin-name" id="sidebar-admin-name">Hostel Admin</div>
+            <div class="admin-role">Chief Warden</div>
+          </div>
+        </div>
+        <button class="btn-logout" id="btn-logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle" id="mobile-toggle">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-title">
+            <h1>Student Management</h1>
+            <p>Enroll, inspect profiles, track fees, and manage hostel allocations</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openAddStudentModal()">
+            <i class="fa-solid fa-user-plus"></i> Add New Student
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="content-body">
+        <!-- Filter and Search Controls Bar -->
+        <div class="controls-bar">
+          <div class="search-filters">
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="search-input" placeholder="Search by name, email, mobile or room number...">
+            </div>
+
+            <select id="course-filter" class="filter-select">
+              <option value="all">All Courses</option>
+              <option value="BCA">BCA</option>
+              <option value="B.Tech">B.Tech</option>
+              <option value="MCA">MCA</option>
+              <option value="BBA">BBA</option>
+              <option value="B.Sc">B.Sc</option>
+            </select>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 13px; font-weight: 600; color: var(--gray-600);" id="student-total-count">Loading...</span>
+            <button class="btn btn-secondary btn-sm" id="btn-export-students">
+              <i class="fa-solid fa-file-arrow-down"></i> Export Student Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Students Data Table -->
+        <div class="dashboard-card" style="padding: 0; overflow: hidden;">
+          <div class="table-responsive">
+            <table class="custom-table" id="students-table">
+              <thead>
+                <tr>
+                  <th>Student Info</th>
+                  <th>Mobile Number</th>
+                  <th>Course</th>
+                  <th>Room No.</th>
+                  <th>Total Fee</th>
+                  <th>Paid Fee</th>
+                  <th>Due Status</th>
+                  <th style="text-align: right; padding-right: 24px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="students-tbody">
+                <tr>
+                  <td colspan="8" style="text-align: center; color: var(--gray-400); padding: 32px;">Loading students...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit Student Modal -->
+  <div class="modal-overlay" id="student-modal">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h3 id="student-modal-title">Register New Student</h3>
+        <button class="modal-close" onclick="closeModal('student-modal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="student-form">
+        <div class="modal-body">
+          <!-- Photo Upload Preview Box -->
+          <div class="photo-upload-box" style="margin-bottom: 20px;">
+            <div class="photo-preview-wrapper">
+              <img src="/uploads/default-avatar.svg" id="photo-preview-img" alt="Student Photo">
+            </div>
+            <div class="photo-upload-btn-wrap">
+              <div style="font-size: 13px; font-weight: 600; color: var(--gray-800);">Student Photograph</div>
+              <div style="font-size: 12px; color: var(--gray-500); margin-bottom: 8px;">Upload passport-style photo (JPEG, PNG or WEBP, max 5MB)</div>
+              <label for="student-photo-input" class="btn btn-secondary btn-browse-photo">
+                <i class="fa-solid fa-camera"></i> Choose Photo
+              </label>
+              <input type="file" id="student-photo-input" accept="image/*">
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="student-name">Full Name *</label>
+              <input type="text" id="student-name" class="form-control" placeholder="e.g. Rahul Sharma" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="student-email">Email Address *</label>
+              <input type="email" id="student-email" class="form-control" placeholder="e.g. rahul@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="student-mobile">Mobile Number *</label>
+              <input type="tel" id="student-mobile" class="form-control" placeholder="e.g. 9876543210" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="student-course">Course & Semester *</label>
+              <input type="text" id="student-course" class="form-control" placeholder="e.g. BCA (5th Semester)" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="student-room-select">Assign Room (Beds Available) *</label>
+              <select id="student-room-select" class="form-control" required>
+                <option value="">-- Select Available Room --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="total-fee">Total Fee (Semester) ₹ *</label>
+              <input type="number" id="total-fee" class="form-control" placeholder="25000" min="0" required>
+            </div>
+
+            <div class="form-group" id="paid-fee-group">
+              <label class="form-label" for="paid-fee">Initial Paid Fee ₹</label>
+              <input type="number" id="paid-fee" class="form-control" placeholder="0" min="0" value="0">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Calculated Remaining Due ₹</label>
+              <input type="text" id="due-fee-display" class="form-control" style="background: var(--gray-100); font-weight: 700; color: var(--danger);" readonly value="₹0">
+            </div>
+
+            <div class="form-group col-span-2">
+              <label class="form-label" for="student-address">Permanent Address *</label>
+              <textarea id="student-address" class="form-control" rows="2" placeholder="Enter residential address" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="guardian-name">Guardian / Parent Name</label>
+              <input type="text" id="guardian-name" class="form-control" placeholder="e.g. Sunil Sharma">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="guardian-mobile">Guardian Contact Number</label>
+              <input type="tel" id="guardian-mobile" class="form-control" placeholder="e.g. 9876500001">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('student-modal')">Cancel</button>
+          <button type="submit" id="btn-save-student" class="btn btn-primary">Save Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/students.js"></script>
+</body>
+</html>

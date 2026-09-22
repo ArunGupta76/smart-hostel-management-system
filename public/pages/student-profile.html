@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profile - Smart Hostel Management System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/students.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">
+          <i class="fa-solid fa-hotel"></i>
+        </div>
+        <div class="sidebar-title">
+          <h2>Smart Hostel</h2>
+          <span>College Edition</span>
+        </div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-label">Main Menu</li>
+        <li>
+          <a href="/pages/dashboard.html">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/pages/students.html">
+            <i class="fa-solid fa-user-graduate"></i>
+            <span>Students</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/rooms.html">
+            <i class="fa-solid fa-door-open"></i>
+            <span>Rooms</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/payments.html">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <span>Payments</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="admin-profile">
+          <div class="admin-avatar" id="sidebar-admin-avatar">A</div>
+          <div class="admin-info">
+            <div class="admin-name" id="sidebar-admin-name">Hostel Admin</div>
+            <div class="admin-role">Chief Warden</div>
+          </div>
+        </div>
+        <button class="btn-logout" id="btn-logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle" id="mobile-toggle">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-title">
+            <h1>Student Profile & Fee Statement</h1>
+            <p>Comprehensive resident dossier and payment ledger</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <a href="/pages/students.html" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Back to Students
+          </a>
+          <button class="btn btn-primary" id="btn-print-profile">
+            <i class="fa-solid fa-print"></i> Print Statement
+          </button>
+        </div>
+      </header>
+
+      <main class="content-body">
+        <div class="profile-grid">
+          <!-- Left Column: Student Bio Card -->
+          <div class="profile-card">
+            <div class="profile-avatar-wrapper">
+              <img src="/uploads/default-avatar.svg" id="profile-img" alt="Resident Photo" onerror="this.src='/uploads/default-avatar.svg'">
+            </div>
+
+            <h3 class="profile-name" id="profile-name">Student Name</h3>
+            <p class="profile-course" id="profile-course">Course Name</p>
+            <div style="margin-top: 8px;">
+              <span class="badge badge-success" id="profile-status-badge">Active</span>
+            </div>
+
+            <div class="profile-quick-stats">
+              <div class="profile-detail-row">
+                <span>Room Number</span>
+                <strong id="profile-room-number">Room 000</strong>
+              </div>
+              <div class="profile-detail-row">
+                <span>Room Type</span>
+                <strong id="profile-room-type">Non-AC Double</strong>
+              </div>
+              <div class="profile-detail-row">
+                <span>Floor Location</span>
+                <strong id="profile-room-floor">Floor 1</strong>
+              </div>
+              <div class="profile-detail-row">
+                <span>Contact Mobile</span>
+                <strong id="profile-mobile">N/A</strong>
+              </div>
+              <div class="profile-detail-row">
+                <span>Email Address</span>
+                <strong id="profile-email">N/A</strong>
+              </div>
+              <div class="profile-detail-row">
+                <span>Admission Date</span>
+                <strong id="profile-admission-date">N/A</strong>
+              </div>
+              <div class="profile-detail-row">
+                <span>Guardian Name</span>
+                <strong id="profile-guardian-name">N/A</strong>
+              </div>
+              <div class="profile-detail-row">
+                <span>Guardian Phone</span>
+                <strong id="profile-guardian-mobile">N/A</strong>
+              </div>
+              <div class="profile-detail-row" style="flex-direction: column; gap: 4px;">
+                <span>Permanent Address</span>
+                <strong id="profile-address" style="font-weight: 500; font-size: 12px; line-height: 1.4;">N/A</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Fee Balance & Payment History -->
+          <div class="profile-tabs-content">
+            <!-- Fee Breakdown Card -->
+            <div class="fee-overview-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 16px; font-weight: 700; color: var(--gray-800);">
+                  <i class="fa-solid fa-receipt" style="color: var(--primary);"></i> Semester Fee Summary
+                </h3>
+                <a href="/pages/payments.html" class="btn btn-success btn-sm" id="btn-add-student-payment">
+                  <i class="fa-solid fa-plus"></i> Collect Fee
+                </a>
+              </div>
+
+              <div class="fee-figures-grid">
+                <div class="fee-stat-box total">
+                  <span>Total Course Fee</span>
+                  <h4 id="profile-total-fee">₹0</h4>
+                </div>
+                <div class="fee-stat-box paid">
+                  <span>Paid Amount</span>
+                  <h4 id="profile-paid-fee" style="color: #059669;">₹0</h4>
+                </div>
+                <div class="fee-stat-box due">
+                  <span>Outstanding Balance</span>
+                  <h4 id="profile-due-fee" style="color: #dc2626;">₹0</h4>
+                </div>
+              </div>
+
+              <div class="occupancy-stat-box">
+                <div class="occupancy-info">
+                  <span>Fee Clearance Progress</span>
+                  <span id="profile-fee-percentage">0% Cleared</span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill progress-fill-success" id="profile-fee-bar" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Ledger Table -->
+            <div class="dashboard-card">
+              <div class="card-header">
+                <div class="card-title">
+                  <i class="fa-solid fa-clock-rotate-left"></i>
+                  <span>Payment History & Receipts</span>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="custom-table">
+                  <thead>
+                    <tr>
+                      <th>Receipt No.</th>
+                      <th>Amount Paid</th>
+                      <th>Payment Mode</th>
+                      <th>Date</th>
+                      <th>Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody id="student-payments-tbody">
+                    <tr>
+                      <td colspan="5" style="text-align: center; color: var(--gray-400); padding: 24px;">Loading payment history...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/student-profile.js"></script>
+</body>
+</html>

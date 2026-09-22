@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Smart Hostel Management System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-brand-icon">
+          <i class="fa-solid fa-hotel"></i>
+        </div>
+        <h1>Smart Hostel Management</h1>
+        <p>BCA College Project • Administration Portal</p>
+      </div>
+
+      <!-- Demo Credentials Quick-Fill Banner -->
+      <div class="demo-credentials-box" id="demo-credentials-box" title="Click to autofill sample credentials">
+        <div class="demo-info">
+          <span>Demo Admin Account:</span>
+          <strong>admin@hostel.com</strong> / <strong>admin123</strong>
+        </div>
+        <button type="button" class="btn-fill-demo">Click to Fill</button>
+      </div>
+
+      <form id="login-form" class="login-form">
+        <div class="form-group">
+          <label class="form-label" for="email" style="color: #cbd5e1;">Admin Email Address</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="email" class="form-control" placeholder="admin@hostel.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password" style="color: #cbd5e1;">Admin Password</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="toggle-password" id="toggle-password">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn-login-submit">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In to Dashboard
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>Powered by Node.js, Express & MongoDB (Mongoose)</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>

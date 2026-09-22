@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Room Management - Smart Hostel Management System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/rooms.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">
+          <i class="fa-solid fa-hotel"></i>
+        </div>
+        <div class="sidebar-title">
+          <h2>Smart Hostel</h2>
+          <span>College Edition</span>
+        </div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-label">Main Menu</li>
+        <li>
+          <a href="/pages/dashboard.html">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/students.html">
+            <i class="fa-solid fa-user-graduate"></i>
+            <span>Students</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/pages/rooms.html">
+            <i class="fa-solid fa-door-open"></i>
+            <span>Rooms</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/payments.html">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <span>Payments</span>
+          </a>
+        </li>
+
+        <li class="menu-label">Reports & Analytics</li>
+        <li>
+          <a href="/pages/students.html">
+            <i class="fa-solid fa-clipboard-user"></i>
+            <span>Student Report</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/pages/rooms.html">
+            <i class="fa-solid fa-bed"></i>
+            <span>Room Report</span>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/payments.html">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Fee Report</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="admin-profile">
+          <div class="admin-avatar" id="sidebar-admin-avatar">A</div>
+          <div class="admin-info">
+            <div class="admin-name" id="sidebar-admin-name">Hostel Admin</div>
+            <div class="admin-role">Chief Warden</div>
+          </div>
+        </div>
+        <button class="btn-logout" id="btn-logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle" id="mobile-toggle">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-title">
+            <h1>Hostel Room Management</h1>
+            <p>Monitor room allocation, bed availability, and floor distributions</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openAddRoomModal()">
+            <i class="fa-solid fa-plus"></i> Add New Room
+          </button>
+        </div>
+      </header>
+
+      <main class="content-body">
+        <!-- Room Metrics Summary -->
+        <div class="controls-bar">
+          <div class="search-filters">
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="room-search-input" placeholder="Search room number (e.g. 101) or type...">
+            </div>
+
+            <select id="room-status-filter" class="filter-select">
+              <option value="all">All Room Statuses</option>
+              <option value="Available">Available</option>
+              <option value="Full">Full</option>
+              <option value="Maintenance">Under Maintenance</option>
+            </select>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="font-size: 13px; color: var(--gray-600);">
+              Total: <strong id="total-rooms-count">0</strong> |
+              Vacant: <strong id="available-rooms-count" style="color: var(--success);">0</strong> |
+              Full: <strong id="full-rooms-count" style="color: var(--danger);">0</strong>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="btn-export-rooms">
+              <i class="fa-solid fa-file-arrow-down"></i> Export Room Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Rooms Visual Grid -->
+        <div class="rooms-grid" id="rooms-grid-container">
+          <div style="grid-column: 1/-1; text-align: center; color: var(--gray-400); padding: 40px;">
+            Loading hostel rooms...
+          </div>
+        </div>
+
+        <!-- Hidden table for CSV Export -->
+        <table id="rooms-table" style="display: none;">
+          <thead>
+            <tr>
+              <th>Room No</th>
+              <th>Floor</th>
+              <th>Type</th>
+              <th>Capacity</th>
+              <th>Occupied</th>
+              <th>Available</th>
+              <th>Semester Fee</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="rooms-table-tbody"></tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit Room Modal -->
+  <div class="modal-overlay" id="room-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="room-modal-title">Add New Room</h3>
+        <button class="modal-close" onclick="closeModal('room-modal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="room-form">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="room-number">Room Number *</label>
+              <input type="text" id="room-number" class="form-control" placeholder="e.g. 101, A-202" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="room-floor">Floor *</label>
+              <input type="number" id="room-floor" class="form-control" placeholder="1" min="0" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="room-type">Room Type *</label>
+              <select id="room-type" class="form-control" required>
+                <option value="Non-AC Double">Non-AC Double (2 Sharing)</option>
+                <option value="AC Double">AC Double (2 Sharing)</option>
+                <option value="AC Single">AC Single (1 Person)</option>
+                <option value="Non-AC Triple">Non-AC Triple (3 Sharing)</option>
+                <option value="Four Bedded">Four Bedded (4 Sharing)</option>
+                <option value="Deluxe">Deluxe Room</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="room-capacity">Bed Capacity (Persons) *</label>
+              <input type="number" id="room-capacity" class="form-control" placeholder="2" min="1" max="10" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="room-price">Fee per Semester ₹ *</label>
+              <input type="number" id="room-price" class="form-control" placeholder="20000" min="0" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="room-status">Initial Room Status</label>
+              <select id="room-status" class="form-control">
+                <option value="Available">Available</option>
+                <option value="Full">Full</option>
+                <option value="Maintenance">Maintenance</option>
+              </select>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label class="form-label" for="room-desc">Room Description & Amenities</label>
+              <textarea id="room-desc" class="form-control" rows="2" placeholder="e.g. Attached washroom, study table, balcony, high-speed Wi-Fi"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('room-modal')">Cancel</button>
+          <button type="submit" id="btn-save-room" class="btn btn-primary">Save Room</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Room Occupants Modal -->
+  <div class="modal-overlay" id="occupants-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="occupants-modal-title">Room Occupants</h3>
+        <button class="modal-close" onclick="closeModal('occupants-modal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="occupants-list-container" class="occupants-list"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('occupants-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/rooms.js"></script>
+</body>
+</html>
