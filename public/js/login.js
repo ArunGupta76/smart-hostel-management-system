@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const emailInput = document.getElementById('email');
   const passwordInput = document.getElementById('password');
   const togglePasswordBtn = document.getElementById('toggle-password');
-  const demoBox = document.getElementById('demo-credentials-box');
   const submitBtn = document.getElementById('submit-btn');
 
   // Toggle password visibility
@@ -16,15 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         icon.classList.toggle('fa-eye');
         icon.classList.toggle('fa-eye-slash');
       }
-    });
-  }
-
-  // One-click demo credentials autofill
-  if (demoBox && emailInput && passwordInput) {
-    demoBox.addEventListener('click', () => {
-      emailInput.value = 'admin@hostel.com';
-      passwordInput.value = 'admin123';
-      showToast('Admin credentials filled!', 'info');
     });
   }
 

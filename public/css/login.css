@@ -55,48 +55,6 @@ body {
   margin-top: 6px;
 }
 
-.demo-credentials-box {
-  background: rgba(79, 70, 229, 0.15);
-  border: 1px dashed rgba(129, 140, 248, 0.4);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.demo-credentials-box:hover {
-  background: rgba(79, 70, 229, 0.25);
-  border-color: #818cf8;
-}
-
-.demo-info {
-  font-size: 12px;
-}
-
-.demo-info span {
-  display: block;
-  color: var(--gray-300);
-}
-
-.demo-info strong {
-  color: #a5b4fc;
-}
-
-.btn-fill-demo {
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
 .login-form {
   display: flex;
   flex-direction: column;
